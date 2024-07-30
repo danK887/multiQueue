@@ -17,7 +17,7 @@ func Run() {
 
 	type Message struct {
 		Name   string  `json:"name"`
-		age    int     `json:"age"`
+		Age    int     `json:"age"`
 		Phone  string  `json:"phone"`
 		Salary float64 `json:"salary"`
 	}
@@ -25,7 +25,7 @@ func Run() {
 	go func() {
 		msg := Message{
 			Name:   randomdata.LastName(),
-			age:    randomdata.Number(18, 65),
+			Age:    randomdata.Number(18, 65),
 			Phone:  randomdata.PhoneNumber(),
 			Salary: randomdata.Decimal(55000, 350000, 2),
 		}
