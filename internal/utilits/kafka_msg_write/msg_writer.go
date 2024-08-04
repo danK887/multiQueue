@@ -3,26 +3,16 @@ package kafkamsgwrite
 import (
 	"encoding/json"
 	"log"
-	connectkafka "multiQueue/internal/connect_kafka"
+	"multiQueue/internal/config"
 
 	"github.com/IBM/sarama"
 	"github.com/Pallinder/go-randomdata"
 )
 
-func MsgWrite() {
-	topic := "multiQueue"
-	producer, _, _ := connectkafka.Connect_KK("10.130.2.30:9093", topic)
-	defer producer.Close()
-
-	type Message struct {
-		Name   string  `json:"name"`
-		Age    int     `json:"age"`
-		Phone  string  `json:"phone"`
-		Salary float64 `json:"salary"`
-	}
+func MsgWrite(producer sarama.SyncProducer, topic string) {
 
 	go func() {
-		msg := Message{
+		msg := config.Message{
 			Name:   randomdata.LastName(),
 			Age:    randomdata.Number(18, 65),
 			Phone:  randomdata.PhoneNumber(),
