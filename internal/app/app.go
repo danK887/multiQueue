@@ -1,45 +1,23 @@
 package app
 
 import (
-	"encoding/json"
-	"log"
-	connectkafka "multiQueue/internal/connect_kafka"
-
-	"github.com/IBM/sarama"
-	"github.com/Pallinder/go-randomdata"
+	"log/slog"
+	writer "multiQueue/internal/utilits/kafka_msg_write"
 )
 
 func Run() {
+	slog.Info("Start application")
+	writer.MsgWrite()
+	slog.Info("Message was send to kafka")
 
-	topic := "multiQueue"
-	producer, _, _ := connectkafka.Connect_KK("10.130.2.30:9093", topic)
-	defer producer.Close()
+	// прочитать сообщения из кафки
 
-	type Message struct {
-		Name   string  `json:"name"`
-		Age    int     `json:"age"`
-		Phone  string  `json:"phone"`
-		Salary float64 `json:"salary"`
-	}
+	// подключиться к ребиту
 
-	go func() {
-		msg := Message{
-			Name:   randomdata.LastName(),
-			Age:    randomdata.Number(18, 65),
-			Phone:  randomdata.PhoneNumber(),
-			Salary: randomdata.Decimal(55000, 350000, 2),
-		}
-		jsonMessage, err := json.Marshal(msg)
-		if err != nil {
-			log.Fatalf("json marshal error: %v", err)
-		}
-		message := &sarama.ProducerMessage{
-			Topic: topic,
-			Value: sarama.ByteEncoder(jsonMessage),
-		}
-		_, _, err = producer.SendMessage(message)
-		if err != nil {
-			log.Fatalf("send message error: %v", err)
-		}
-	}()
+	// записать прочитанные сообщения из кафки в ребит
+
+	// подлкючиться к кликхаус
+
+	// из ребита прочитать сообщения и записать в кликхаус
+
 }
